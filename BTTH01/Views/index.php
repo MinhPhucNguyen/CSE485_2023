@@ -1,3 +1,8 @@
+<?php
+require_once('../Controllers/StudentDAO.php');
+$studentDAO = new StudentDAO();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,16 +37,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   <tr>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>
-                                        <a href="" class="btn btn-primary">Edit</a>
-                                        <a href="" class="btn btn-danger">Delete</a>
-                                    </td>
-                                   </tr>
+                                    <?php
+                                    foreach ($studentDAO->getAll() as $student) :
+                                    ?>
+                                        <tr>
+                                            <td><?= $student->getId() ?></td>
+                                            <td><?= $student->getName() ?></td>
+                                            <td><?= $student->getAge() ?></td>
+                                            <td><?= $student->getGrade() ?></td>
+                                            <td>
+                                                <a href="" class="btn btn-primary">Edit</a>
+                                                <a href="" class="btn btn-danger">Delete</a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    endforeach;                                    ?>
+
                                 </tbody>
                             </table>
                         </div>

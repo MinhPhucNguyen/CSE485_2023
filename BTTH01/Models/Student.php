@@ -5,7 +5,6 @@ class Student
     private $name;
     private $age;
     private $grade;
-
     public function getId()
     {
         return $this->id;
