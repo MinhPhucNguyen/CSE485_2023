@@ -1,5 +1,8 @@
 <?php 
     class StudentDAO{
-        private $studentList = array();
-    }
+            private $studentsList = array();
+
+   
+          }
+        
 ?>
