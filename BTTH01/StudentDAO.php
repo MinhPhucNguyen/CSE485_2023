@@ -1,5 +1,9 @@
 <?php 
     class StudentDAO{
-        public function create(){}
+        private $studentList = array();
+
+        public function create(){
+            return ;
+        }
     }
 ?>
