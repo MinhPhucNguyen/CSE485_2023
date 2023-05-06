@@ -1,11 +1,9 @@
 <?php
 require_once('../Controllers/StudentDAO.php');
-$studentDAO = new StudentDAO();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +36,8 @@ $studentDAO = new StudentDAO();
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($studentDAO->getAll() as $student) :
+                                    $studentDAO = new StudentDAO();
+                                    foreach ($studentDAO->getAll() as $student):
                                     ?>
                                         <tr>
                                             <td><?= $student->getId() ?></td>
