@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2 class="d-inline-block">Student Management</h2>
-                            <a href="" class="btn btn-success float-right">Create New Student</a>
+                            <a href="form_create.php" class="btn btn-success float-right">Create New Student</a>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-striped">
