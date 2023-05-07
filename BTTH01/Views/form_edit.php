@@ -15,19 +15,21 @@ if (isset($_POST['edit_btn'])) {
     $student->setAge($age);
     $student->setGrade($grade);
 
-    // $update = $studentDAO->update($student);
-    // if ($update) {
-    //     $_SESSION['success'] = 'Update student successfully';
-    //     header('Location: index.php');
-    //     exit();
-    // }
-    // else{
-    //     $_SESSION['error'] = 'Update student failed';
-    //     header('Location: form_edit.php');
-    //     exit();
-    // }
+    $update = $studentDAO->update($student);
+
+    if ($update) {
+        $_SESSION['success'] = 'Update student successfully';
+        header('Location: index.php');
+        exit();
+    }
+    else{
+        $_SESSION['error'] = 'Update student failed';
+        header('Location: form_edit.php');
+        exit();
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

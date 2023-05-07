@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 require_once '../Models/Student.php';
 
 class StudentDAO
@@ -8,12 +11,16 @@ class StudentDAO
 
     public function create(Student $student)
     {
-        $file = fopen($this->filename, 'a');
-        if ($file !== false) {
-            $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
-            fputcsv($file, $array);
-            fclose($file);
-            return true;
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'a');
+            if ($file !== false) {
+                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                fputcsv($file, $array);
+                fclose($file);
+                return true;
+            }
+        } else {
+            echo 'File not found';
         }
         return false;
     }
@@ -43,53 +50,68 @@ class StudentDAO
         return $student;
     }
 
-    // public function update(Student $student){
-    //     $data = [];
-    //     $updated = false;
-    //     if(file_exists($this->filename)){
-    //         if(($file = fopen($this->filename, 'r')) !== false){
-    //             while(($row = fgetcsv($file)) !== false){
-    //                 if($row[0] == $student->getId()){
-    //                     $data = array($student->getName(), $student->getAge(), $student->getGrade());
-    //                     $update_into_file = fopen($this->filename, 'w');
-    //                     foreach($data as $line){
-    //                         fputcsv($update_into_file, $line);
-    //                         $updated = true;
-    //                     }
-    //                     return true;
-    //                 }
-    //                 return false;
-    //             }
-    //         }
-    //         else
-    //         {
-    //             echo 'Unable to open file';
-    //         }
-    //     }
-    //     else
-    //     {
-    //         echo 'File not found';
-    //     }
-    // }
+    public function update(Student $student)
+    {
+        $data = array();
+        $updated = false;
 
-    public function delete($id){
-        $deleted = false;
-
-        if(file_exists($this->filename)){
+        if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'r');
-            if($file !== false){
-                fgetcsv($file);
-                while(($row = fgetcsv($file))){
-                    if($row[0] == $id){
-                        $deleted = true;
+            if ($file !== false) {
+                while (($row = fgetcsv($file)) !== false) {
+                    if ($row[0] == $student->getId()) {
+                        $data[] = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                        $updated = true;
+                    } else {
+                        $data[] = $row;
                     }
                 }
             }
-        }
-        else{
+
+            if ($updated && ($file_update = fopen($this->filename, 'w')) !== false) {
+                foreach ($data as $line) {
+                    fputcsv($file_update, $line);
+                }
+                fclose($file_update);
+                return true;
+            }
+        } else {
             echo 'File not found';
         }
+        return false;
     }
+
+    // public function delete($id){
+    //     $deleted = false;
+    //     $newData = array();
+
+    //     if(file_exists($this->filename)){
+    //         $file = fopen($this->filename, 'r');
+    //         if($file !== false){
+    //             fgetcsv($file);
+    //             while(($row = fgetcsv($file))){
+    //                 if($row[0] == $id){
+    //                     $deleted = true;
+    //                     continue;
+    //                 }
+    //                 $newData = $row;
+    //             }
+    //         }
+
+    //         if($deleted && ($file = fopen($this->filename, 'w')) !== false){
+    //             foreach($newData as $line){
+    //                 fputcsv($file, $line);
+    //             }
+    //             fclose($file);
+    //             return true;
+    //         }
+    //         fclose($file);
+    //     }
+    //     else{
+    //         echo 'File not found';
+    //     }
+    //     return false;
+    // }
 
     public function getAll()
     {

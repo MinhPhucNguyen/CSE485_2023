@@ -3,7 +3,10 @@ session_start();
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
-
+// if(isset($_POST['delete_btn'])){
+//     $idStudent = $_POST['delete_btn'];
+//     $studentDAO->delete($idStudent);
+// }
 
 ?>
 
