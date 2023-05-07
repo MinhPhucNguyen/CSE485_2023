@@ -1,9 +1,13 @@
 <?php
+session_start();
 require_once('../Controllers/StudentDAO.php');
+$studentDAO = new StudentDAO();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +22,16 @@ require_once('../Controllers/StudentDAO.php');
         <div class="container-fluid">
             <div class="row mt-4">
                 <div class="col-md-12">
+                    <?php
+                    if (isset($_SESSION['success'])) {
+                    ?>
+                        <div class="alert alert-success">
+                            <?= $_SESSION['success'] ?>
+                        </div>
+                    <?php
+                        unset($_SESSION['success']);
+                    }
+                    ?>
                     <div class="card">
                         <div class="card-header">
                             <h2 class="d-inline-block">Student Management</h2>
@@ -36,8 +50,7 @@ require_once('../Controllers/StudentDAO.php');
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $studentDAO = new StudentDAO();
-                                    foreach ($studentDAO->getAll() as $student):
+                                    foreach ($studentDAO->getAll() as $student) :
                                     ?>
                                         <tr>
                                             <td><?= $student->getId() ?></td>
@@ -50,8 +63,8 @@ require_once('../Controllers/StudentDAO.php');
                                             </td>
                                         </tr>
                                     <?php
-                                    endforeach;                                    ?>
-
+                                    endforeach;
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

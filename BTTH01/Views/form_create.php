@@ -1,3 +1,31 @@
+<?php
+session_start();
+require_once('../Controllers/StudentDAO.php');
+$studentDAO = new StudentDAO();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $grade = $_POST['grade'];
+
+    $student = new Student();
+    $student->setId($id);
+    $student->setName($name);
+    $student->setAge($age);
+    $student->setGrade($grade);
+
+    $result = $studentDAO->create($student);
+    if ($result) {
+        $_SESSION['success'] = 'Create student successfully';
+        header('Location: index.php');
+    } else {
+        $_SESSION['error'] = 'Cannot create new student';
+        header('Location: form_create.php');
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +43,16 @@
         <div class="container-fluid">
             <div class="row justify-content-center mt-4">
                 <div class="col-md-5">
+                    <?php
+                    if (isset($_SESSION['success'])) {
+                    ?>
+                        <div class="alert alert-success">
+                            <?= $_SESSION['success'] ?>
+                        </div>
+                    <?php
+                        unset($_SESSION['success']);
+                    }
+                    ?>
                     <div class="card">
                         <div class="card-header">
                             <h2 class="d-inline-block">Create new student</h2>
@@ -35,7 +73,7 @@
                                     <input type="text" class="form-control" name="age" placeholder="Enter Age">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="">Grafe</label>
+                                    <label for="">Grade</label>
                                     <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
                                 </div>
                                 <div class="form-group mb-3">
