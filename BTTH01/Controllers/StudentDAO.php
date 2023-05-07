@@ -17,29 +17,30 @@ class StudentDAO
         return false;
     }
 
-    // public function read()
-    // {
-    //     $filename = '../students.csv';
-    //     if (file_exists($filename)) {
-    //         $file = fopen($filename, 'r');
-    //         if ($file) {
-    //             fgetcsv($file); //bỏ qua hàng tiêu đề
-    //             while (($row = fgetcsv($file)) !== false) {
-    //                 $student = new Student();
-    //                 $student->setId($row[0]);
-    //                 $student->setName($row[1]);
-    //                 $student->setAge($row[2]);
-    //                 $student->setGrade($row[3]);
-    //                 $this->studentsList[] = $student;
-    //             }
-    //         } else {
-    //             echo "Unable to open file";
-    //         }
-    //         fclose($file);
-    //     } else {
-    //         echo "File not found";
-    //     }
-    // }
+    public function read()
+    {
+        $filename = '../students.csv';
+        if (file_exists($filename)) {
+            $file = fopen($filename, 'r');
+            if ($file) {
+                fgetcsv($file); //bỏ qua hàng tiêu đề
+                while (($row = fgetcsv($file)) !== false) {
+                    $student = new Student();
+                    $student->setId($row[0]);
+                    $student->setName($row[1]);
+                    $student->setAge($row[2]);
+                    $student->setGrade($row[3]);
+                    $this->studentsList[] = $student;
+                }
+            } else {
+                echo "Unable to open file";
+            }
+            fclose($file);
+        } else {
+            echo "File not found";
+        }
+        return $this->studentsList;
+    }
 
     public function getAll()
     {
