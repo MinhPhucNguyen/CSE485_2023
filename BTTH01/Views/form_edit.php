@@ -3,7 +3,7 @@ session_start();
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (isset($_POST['edit_btn'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $age = $_POST['age'];
@@ -15,14 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student->setAge($age);
     $student->setGrade($grade);
 
-    $result = $studentDAO->create($student);
-    if ($result) {
-        $_SESSION['success'] = 'Create student successfully';
-        header('Location: index.php');
-        exit();
-    } 
+    // $update = $studentDAO->update($student);
+    // if ($update) {
+    //     $_SESSION['success'] = 'Update student successfully';
+    //     header('Location: index.php');
+    //     exit();
+    // }
+    // else{
+    //     $_SESSION['error'] = 'Update student failed';
+    //     header('Location: form_edit.php');
+    //     exit();
+    // }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,29 +55,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     ?>
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="d-inline-block">Create new student</h2>
+                            <h2 class="d-inline-block">Edit student</h2>
                             <a href="index.php" class="btn btn-danger float-right">Back</a>
                         </div>
                         <div class="card-body">
-                            <form action="form_create.php" method="POST">
-                                <div class="form-group mb-3">
-                                    <label for="">ID</label>
-                                    <input type="text" class="form-control" name="id" placeholder="Enter ID" required>
-                                </div>
+                            <?php
+
+                            $studentByID = new Student();
+                            if (isset($_GET['id'])) {
+                                $idStudent = $_GET['id'];
+                                $studentByID = $studentDAO->read($idStudent);
+                            }
+
+                            ?>
+                            <form action="form_edit.php" method="POST">
+                                <input type="hidden" name="id" value="<?= $studentByID->getId() ?>">
                                 <div class="form-group mb-3">
                                     <label for="">Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Enter Name" value="<?= $studentByID->getName() ?>" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="">Age</label>
-                                    <input type="text" class="form-control" name="age" placeholder="Enter Age" required>
+                                    <input type="text" class="form-control" name="age" placeholder="Enter Age" value="<?= $studentByID->getAge() ?>" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="">Grade</label>
-                                    <input type="text" class="form-control" name="grade" placeholder="Enter Grade" required>
+                                    <input type="text" class="form-control" name="grade" placeholder="Enter Grade" value="<?= $studentByID->getGrade() ?>" required>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <button type="submit" name="create_btn" class="btn btn-success">Create student</button>
+                                    <button type="submit" name="edit_btn" class="btn btn-success">Save changes</button>
                                 </div>
                             </form>
                         </div>

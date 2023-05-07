@@ -3,6 +3,8 @@ session_start();
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +52,8 @@ $studentDAO = new StudentDAO();
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($studentDAO->getAll() as $student) :
+                                    $students = $studentDAO->getAll();
+                                    foreach ($students as $student) :
                                     ?>
                                         <tr>
                                             <td><?= $student->getId() ?></td>
@@ -58,8 +61,10 @@ $studentDAO = new StudentDAO();
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
                                             <td>
-                                                <a href="" class="btn btn-primary">Edit</a>
-                                                <a href="" class="btn btn-danger">Delete</a>
+                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">Edit</a>
+                                                <form action="index.php" class="d-inline-block" method="POST">
+                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php
