@@ -62,19 +62,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <form action="form_create.php" method="POST">
                                 <div class="form-group mb-3">
                                     <label for="">ID</label>
-                                    <input type="text" class="form-control" name="id" placeholder="Enter ID">
+                                    <input type="text" class="form-control" name="id" placeholder="Enter ID" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="">Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Enter Name">
+                                    <input type="text" class="form-control" name="name" placeholder="Enter Name" required> 
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="">Age</label>
-                                    <input type="text" class="form-control" name="age" placeholder="Enter Age">
+                                    <input type="text" class="form-control" name="age" placeholder="Enter Age" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="">Grade</label>
-                                    <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
+                                    <input type="text" class="form-control" name="grade" placeholder="Enter Grade" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <button type="submit" name="submit_btn" class="btn btn-success">Create student</button>
