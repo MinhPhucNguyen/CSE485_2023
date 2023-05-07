@@ -3,10 +3,20 @@ session_start();
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
-// if(isset($_POST['delete_btn'])){
-//     $idStudent = $_POST['delete_btn'];
-//     $studentDAO->delete($idStudent);
-// }
+if(isset($_POST['delete_btn'])){
+    $idStudent = $_POST['delete_btn'];
+    $deleted = $studentDAO->delete($idStudent);
+    if($deleted){
+        $_SESSION['success'] = 'Delete student successfully';
+        header('Location: index.php');
+        exit();
+    }
+    else{
+        $_SESSION['error'] = 'Delete student failed';
+        header('Location: index.php');
+        exit();
+    }
+}
 
 ?>
 

@@ -81,37 +81,37 @@ class StudentDAO
         return false;
     }
 
-    // public function delete($id){
-    //     $deleted = false;
-    //     $newData = array();
+    public function delete($id){
+        $data = array();
+        $deleted = false;
 
-    //     if(file_exists($this->filename)){
-    //         $file = fopen($this->filename, 'r');
-    //         if($file !== false){
-    //             fgetcsv($file);
-    //             while(($row = fgetcsv($file))){
-    //                 if($row[0] == $id){
-    //                     $deleted = true;
-    //                     continue;
-    //                 }
-    //                 $newData = $row;
-    //             }
-    //         }
+        if(file_exists($this->filename)){
+            $file = fopen($this->filename, 'r');
+            if($file !== false){
+                while(($row = fgetcsv($file))){
+                    if($row[0] == $id){
+                        $deleted = true;
+                        continue;
+                    }
+                    else{
+                        $data[] = $row;
+                    }
+                }
+            }
 
-    //         if($deleted && ($file = fopen($this->filename, 'w')) !== false){
-    //             foreach($newData as $line){
-    //                 fputcsv($file, $line);
-    //             }
-    //             fclose($file);
-    //             return true;
-    //         }
-    //         fclose($file);
-    //     }
-    //     else{
-    //         echo 'File not found';
-    //     }
-    //     return false;
-    // }
+            if($deleted && ($file = fopen($this->filename, 'w')) !== false){
+                foreach($data as $line){
+                    fputcsv($file, $line);
+                }
+                fclose($file);
+                return true;
+            }
+        }
+        else{
+            echo 'File not found';
+        }
+        return false;
+    }
 
     public function getAll()
     {

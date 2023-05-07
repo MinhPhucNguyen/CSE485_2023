@@ -1,9 +1,5 @@
-id,name,age,grade
-1,"John Smith updated",12,6
+1,"John Smith",12,6
 2,"Jane Doe",13,7
 3,"Michael Johnson",11,5
-4,"Emily Davis update",12,6
-5,"Messi update  123",18,8
-7,admin,20,20
-6,"phuc nguyen",20,9
-7,"phuc nguyen",20,34
+4,"Emily Davis",12,6
+5,"James Rodriguez",14,8
