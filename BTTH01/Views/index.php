@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../StudentDAO.php');
+require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
 ?>
@@ -58,7 +58,7 @@ $studentDAO = new StudentDAO();
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
                                             <td>
-                                                <a href="" class="btn btn-primary">Edit</a>
+                                                <a href="form_create.php" class="btn btn-primary">Edit</a>
                                                 <a href="" class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
