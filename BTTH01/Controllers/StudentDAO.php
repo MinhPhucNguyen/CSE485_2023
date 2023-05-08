@@ -1,26 +1,40 @@
 <?php
-
-use function PHPSTORM_META\type;
-
 require_once '../Models/Student.php';
 
 class StudentDAO
 {
     private $studentsList = array();
     private $filename = '../students.csv';
+    private $students = array();
 
     public function create(Student $student)
     {
+        if ($this->checkID($student->getId())) {
+            $_SESSION['checkID'] = "ID already exists, Please enter a different ID";
+            return false;
+        }
+
         if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'a');
             if ($file !== false) {
                 $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
                 fputcsv($file, $array);
                 fclose($file);
+                array_push($this->students, $student);
                 return true;
             }
         } else {
             echo 'File not found';
+        }
+        return false;
+    }
+
+    public function checkID($id)
+    {
+        foreach ($this->students as $student) {
+            if ($student->getId() == $id) {
+                return true;
+            }
         }
         return false;
     }
@@ -81,33 +95,32 @@ class StudentDAO
         return false;
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $data = array();
         $deleted = false;
 
-        if(file_exists($this->filename)){
+        if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'r');
-            if($file !== false){
-                while(($row = fgetcsv($file))){
-                    if($row[0] == $id){
+            if ($file !== false) {
+                while (($row = fgetcsv($file))) {
+                    if ($row[0] == $id) {
                         $deleted = true;
                         continue;
-                    }
-                    else{
+                    } else {
                         $data[] = $row;
                     }
                 }
             }
 
-            if($deleted && ($file = fopen($this->filename, 'w')) !== false){
-                foreach($data as $line){
+            if ($deleted && ($file = fopen($this->filename, 'w')) !== false) {
+                foreach ($data as $line) {
                     fputcsv($file, $line);
                 }
                 fclose($file);
                 return true;
             }
-        }
-        else{
+        } else {
             echo 'File not found';
         }
         return false;

@@ -20,7 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['success'] = 'Create student successfully';
         header('Location: index.php');
         exit();
-    } 
+    } else {
+        if (isset($_SESSION['checkID'])) {
+            header('Location: form_create.php');
+            exit();
+        }
+    }
 }
 
 ?>
@@ -48,6 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php
                         unset($_SESSION['error']);
                     }
+                    if (isset($_SESSION['error'])) {
+                        ?>
+                            <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
+                        <?php
+                            unset($_SESSION['error']);
+                        }
                     ?>
                     <div class="card">
                         <div class="card-header">
