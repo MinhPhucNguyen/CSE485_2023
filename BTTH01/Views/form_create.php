@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_SESSION['checkID'])) {
             header('Location: form_create.php');
             exit();
+        } else {
+            $_SESSION['error'] = 'Create student failed';
+            header('Location: form_create.php');
+            exit();
         }
     }
 }
@@ -53,12 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php
                         unset($_SESSION['error']);
                     }
-                    if (isset($_SESSION['error'])) {
-                        ?>
-                            <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
-                        <?php
-                            unset($_SESSION['error']);
-                        }
+                    if (isset($_SESSION['checkID'])) {
+                    ?>
+                        <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
+                    <?php
+                        unset($_SESSION['checkID']);
+                    }
                     ?>
                     <div class="card">
                         <div class="card-header">

@@ -5,7 +5,19 @@ class StudentDAO
 {
     private $studentsList = array();
     private $filename = '../students.csv';
-    private $students = array();
+
+    public function checkID($id)
+    {
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
+            while (($row = fgetcsv($file)) !== false) {
+                if ($row[0] == $id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public function create(Student $student)
     {
@@ -20,21 +32,10 @@ class StudentDAO
                 $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
                 fputcsv($file, $array);
                 fclose($file);
-                array_push($this->students, $student);
                 return true;
             }
         } else {
             echo 'File not found';
-        }
-        return false;
-    }
-
-    public function checkID($id)
-    {
-        foreach ($this->students as $student) {
-            if ($student->getId() == $id) {
-                return true;
-            }
         }
         return false;
     }
