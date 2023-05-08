@@ -4,33 +4,68 @@ require_once '../Models/Student.php';
 class StudentDAO
 {
     private $studentsList = array();
+    private $filename = '../students.csv';
+    private $students = array();
+
     public function create(Student $student)
     {
-        $filename = '../students.csv';
-        $file = fopen($filename, 'a');
-        if ($file !== false) {
-            $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
-            fputcsv($file, $array);
-            fclose($file);
-            return true;
+        if ($this->checkID($student->getId())) {
+            $_SESSION['checkID'] = "ID already exists, Please enter a different ID";
+            return false;
         }
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'a');
+            if ($file !== false) {
+                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                fputcsv($file, $array);
+                fclose($file);
+                array_push($this->students, $student);
+                return true;
+            }else {
+                echo 'File not found';
+            }
+        } 
         return false;
+        
     }
 
-    public function read()
-    {
-        $filename = '../students.csv';
-        if (file_exists($filename)) {
-            $file = fopen($filename, 'r');
+    // public function checkID($id)
+    // {
+    //     foreach ($this->students as $student) {
+    //         if ($student->getId() == $id) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+    public function checkID($id){
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
             if ($file) {
                 fgetcsv($file); //bỏ qua hàng tiêu đề
                 while (($row = fgetcsv($file)) !== false) {
-                    $student = new Student();
-                    $student->setId($row[0]);
-                    $student->setName($row[1]);
-                    $student->setAge($row[2]);
-                    $student->setGrade($row[3]);
-                    $this->studentsList[] = $student;
+                    if($id == $row[0]){
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+    }
+    public function read($id)
+    {
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
+            if ($file) {
+                fgetcsv($file); //bỏ qua hàng tiêu đề
+                while (($row = fgetcsv($file)) !== false) {
+                    if ($row[0] == $id) {
+                        $student = new Student();
+                        $student->setId($row[0]);
+                        $student->setName($row[1]);
+                        $student->setAge($row[2]);
+                        $student->setGrade($row[3]);
+                    }
                 }
             } else {
                 echo "Unable to open file";
@@ -39,14 +74,75 @@ class StudentDAO
         } else {
             echo "File not found";
         }
-        return $this->studentsList;
+        return $student;
+    }
+
+    public function update(Student $student)
+    {
+        $data = array();
+        $updated = false;
+
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
+            if ($file !== false) {
+                while (($row = fgetcsv($file)) !== false) {
+                    if ($row[0] == $student->getId()) {
+                        $data[] = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                        $updated = true;
+                    } else {
+                        $data[] = $row;
+                    }
+                }
+            }
+
+            if ($updated && ($file_update = fopen($this->filename, 'w')) !== false) {
+                foreach ($data as $line) {
+                    fputcsv($file_update, $line);
+                }
+                fclose($file_update);
+                return true;
+            }
+        } else {
+            echo 'File not found';
+        }
+        return false;
+    }
+
+    public function delete($id)
+    {
+        $data = array();
+        $deleted = false;
+
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
+            if ($file !== false) {
+                while (($row = fgetcsv($file))) {
+                    if ($row[0] == $id) {
+                        $deleted = true;
+                        continue;
+                    } else {
+                        $data[] = $row;
+                    }
+                }
+            }
+
+            if ($deleted && ($file = fopen($this->filename, 'w')) !== false) {
+                foreach ($data as $line) {
+                    fputcsv($file, $line);
+                }
+                fclose($file);
+                return true;
+            }
+        } else {
+            echo 'File not found';
+        }
+        return false;
     }
 
     public function getAll()
     {
-        $filename = '../students.csv';
-        if (file_exists($filename)) {
-            $file = fopen($filename, 'r');
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
             if ($file) {
                 fgetcsv($file); //bỏ qua hàng tiêu đề
                 while (($row = fgetcsv($file)) !== false) {
