@@ -4,30 +4,64 @@ require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $age = $_POST['age'];
-    $grade = $_POST['grade'];
+    $validate_form = array(
+        'id' => array(
+            'filter' => FILTER_VALIDATE_INT,
+            'options' => array(
+                'min_range' => 1
+            )
+        ),
+        'name' => array(
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'options' => array(
+                "regexp" => "/^[a-zA-Z ]*$/"
+            )
+        ),
+        'age' => array('filter' => FILTER_VALIDATE_INT, 'options' => array('min_range' => 1, 'max_range' => 25)),
+        'grade' => array('filter' => FILTER_VALIDATE_INT, 'options' => array('min_range' => 1, 'max_range' => 10))
 
-    $student = new Student();
-    $student->setId($id);
-    $student->setName($name);
-    $student->setAge($age);
-    $student->setGrade($grade);
+    );
 
-    $result = $studentDAO->create($student);
-    if ($result) {
-        $_SESSION['success'] = 'Create student successfully';
-        header('Location: index.php');
-        exit();
+    $validated_data = filter_input_array(INPUT_POST, $validate_form);
+    if (in_array(false, $validated_data, true)) {
+        if ($validated_data['id'] === false) {
+            $errors['id'] = "ID is a number greater than 0.";
+        }
+        if ($validated_data['name'] === false) {
+            $errors['name'] = "Please provide a valid name.";
+        }
+        if ($validated_data['age'] === false) {
+            $errors['age'] = "Please provide a valid age.";
+        }
+        if ($validated_data['grade'] === false) {
+            $errors['grade'] = "Please provide a valid grade.";
+        }
     } else {
-        if (isset($_SESSION['checkID'])) {
-            header('Location: form_create.php');
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $grade = $_POST['grade'];
+
+        $student = new Student();
+        $student->setId($id);
+        $student->setName($name);
+        $student->setAge($age);
+        $student->setGrade($grade);
+
+        $result = $studentDAO->create($student);
+        if ($result) {
+            $_SESSION['success'] = 'Create student successfully';
+            header('Location: index.php');
             exit();
         } else {
-            $_SESSION['error'] = 'Create student failed';
-            header('Location: form_create.php');
-            exit();
+            if (isset($_SESSION['checkID'])) {
+                header('Location: form_create.php');
+                exit();
+            } else {
+                $_SESSION['error'] = 'Create student failed';
+                header('Location: form_create.php');
+                exit();
+            }
         }
     }
 }
