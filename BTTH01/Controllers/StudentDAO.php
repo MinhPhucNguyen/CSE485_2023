@@ -6,6 +6,19 @@ class StudentDAO
     private $studentsList = array();
     private $filename = '../students.csv';
 
+    public function search(){
+        $searchTerm = $_POST['search'];
+        if (file_exists($this->filename)) {
+            $file = fopen($this->filename, 'r');
+            fgetcsv($file);
+            while (($row = fgetcsv($file)) !== false) {
+                if(strpos($row[0],$searchTerm) !== false){
+                    echo "<p>" . $row[0] . " - " . $row[1] . "</p>";
+                }
+            }fclose($file);
+    }
+    }
+
     public function checkID($id)
     {
         if (file_exists($this->filename)) {

@@ -17,8 +17,23 @@ if(isset($_POST['delete_btn'])){
         exit();
     }
 }
+// if(isset($_POST['search'])){
+//     $idStudent = $_POST['search'];
+//     $search = $studentDAO->search($idStudent);
+//     if($search){
+//         $_SESSION['success']='Successful search';
+//         header('Location: index.php');
+//         exit();
+//     }
+//     else{
+//         $_SESSION['error'] = 'Search failed';
+//         header('Location: index.php');
+//         exit();
+//     }
+// }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,6 +67,14 @@ if(isset($_POST['delete_btn'])){
                             <h2 class="d-inline-block">Student Management</h2>
                             <a href="form_create.php" class="btn btn-success float-right">Create New Student</a>
                         </div>
+                        <nav class="navbar bg-body-tertiary">
+                        <div class="container-fluid">
+                            <form class="d-flex" role="search" action="index.php" method="post">
+                            <input class="form-control me-2" type="text" name="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                        </nav>
                         <div class="card-body">
                             <table class="table table-bordered table-striped">
                                 <thead>
@@ -65,6 +88,10 @@ if(isset($_POST['delete_btn'])){
                                 </thead>
                                 <tbody>
                                     <?php
+                                    if(isset($_POST['search'])){
+                                        $studentDAO->search();
+                                    
+                                    }                                    
                                     $students = $studentDAO->getAll();
                                     foreach ($students as $student) :
                                     ?>
