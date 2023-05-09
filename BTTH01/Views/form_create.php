@@ -3,45 +3,39 @@ session_start();
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
+$student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '');
+$errors  = array('id' => '', 'name' => '', 'age' => '', 'grade' => '');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $validate_form = array(
-        'id' => array(
-            'filter' => FILTER_VALIDATE_INT,
-            'options' => array(
-                'min_range' => 1
-            )
-        ),
-        'name' => array(
-            'filter' => FILTER_VALIDATE_REGEXP,
-            'options' => array(
-                "regexp" => "/^[a-zA-Z ]*$/"
-            )
-        ),
-        'age' => array('filter' => FILTER_VALIDATE_INT, 'options' => array('min_range' => 1, 'max_range' => 25)),
-        'grade' => array('filter' => FILTER_VALIDATE_INT, 'options' => array('min_range' => 1, 'max_range' => 10))
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $grade = $_POST['grade'];
 
-    );
+    $validate_input['id']['filter']               = FILTER_VALIDATE_INT;
+    $validate_input['name']['filter']              = FILTER_VALIDATE_REGEXP;
+    $validate_input['name']['options']['regexp']   = '/^[A-z]{2,10}$/';
+    $validate_input['age']['filter']               = FILTER_VALIDATE_INT;
+    $validate_input['age']['options']['min_range'] = 1;
+    $validate_input['age']['options']['max_range'] = 50;
+    $validate_input['grade']['filter']               = FILTER_VALIDATE_INT;
+    $validate_input['grade']['options']['min_range'] = 1;
+    $validate_input['grade']['options']['max_range'] = 50;
 
-    $validated_data = filter_input_array(INPUT_POST, $validate_form);
-    if (in_array(false, $validated_data, true)) {
-        if ($validated_data['id'] === false) {
-            $errors['id'] = "ID is a number greater than 0.";
-        }
-        if ($validated_data['name'] === false) {
-            $errors['name'] = "Please provide a valid name.";
-        }
-        if ($validated_data['age'] === false) {
-            $errors['age'] = "Please provide a valid age.";
-        }
-        if ($validated_data['grade'] === false) {
-            $errors['grade'] = "Please provide a valid grade.";
-        }
-    } else {
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $age = $_POST['age'];
-        $grade = $_POST['grade'];
+    $student = filter_input_array(INPUT_POST, $validate_input);
 
+    // echo '<pre>';
+    // var_dump(filter_input_array(INPUT_POST, $validate_inputs));
+    // echo '</pre>';
+
+    $errors['id'] = empty(trim($id)) ? '*ID is required' : ($student['id'] ? '' : '*ID must be a number');
+    $errors['name'] =  empty(trim($name)) ? '*Name is required' : ($student['name'] ? '' : '*Name is invalid');
+    $errors['age'] =  empty(trim($age)) ? '*Age is required' : ($student['age'] ? '' : '*Age is invalid');
+    $errors['grade'] =  empty(trim($grade)) ? '*Grade is required' : ($student['grade'] ? '' : '*Grade is invalid');
+
+    if (implode($errors)) { //nối trong mảng thành các chuỗi duy nhất
+        $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
+    }
+    else {
         $student = new Student();
         $student->setId($id);
         $student->setName($name);
@@ -67,75 +61,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Student Management</title>
-</head>
+<?php include('layouts/assets/header.php') ?>
 
-<body>
-
-    <div class="main">
-        <div class="container-fluid">
-            <div class="row justify-content-center mt-4">
-                <div class="col-md-5">
-                    <?php
-                    if (isset($_SESSION['error'])) {
-                    ?>
-                        <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
-                    <?php
-                        unset($_SESSION['error']);
-                    }
-                    if (isset($_SESSION['checkID'])) {
-                    ?>
-                        <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
-                    <?php
-                        unset($_SESSION['checkID']);
-                    }
-                    ?>
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="d-inline-block">Create new student</h2>
-                            <a href="index.php" class="btn btn-danger float-right">Back</a>
-                        </div>
-                        <div class="card-body">
-                            <form action="form_create.php" method="POST">
-                                <div class="form-group mb-3">
-                                    <label for="">ID</label>
-                                    <input type="text" class="form-control" name="id" placeholder="Enter ID" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="">Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="">Age</label>
-                                    <input type="text" class="form-control" name="age" placeholder="Enter Age" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="">Grade</label>
-                                    <input type="text" class="form-control" name="grade" placeholder="Enter Grade" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <button type="submit" name="create_btn" class="btn btn-success">Create student</button>
-                                </div>
-                            </form>
-                        </div>
+<div class="main">
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-5">
+                <?php
+                if (isset($_SESSION['error'])) {
+                ?>
+                    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                <?php
+                    unset($_SESSION['error']);
+                }
+                if (isset($_SESSION['checkID'])) {
+                ?>
+                    <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
+                <?php
+                    unset($_SESSION['checkID']);
+                }
+                ?>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="d-inline-block">Create new student</h2>
+                        <a href="index.php" class="btn btn-danger float-right">Back</a>
+                    </div>
+                    <div class="card-body">
+                        <form action="form_create.php" method="POST">
+                            <div class="form-group mb-3">
+                                <label for="">ID</label>
+                                <input type="text" class="form-control" name="id" placeholder="Enter ID">
+                                <small class="text-danger"><?= $errors['id'] ?></small>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="Enter Name">
+                                <small class="text-danger"><?= $errors['name'] ?></small>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Age</label>
+                                <input type="text" class="form-control" name="age" placeholder="Enter Age">
+                                <small class="text-danger"><?= $errors['age'] ?></small>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Grade</label>
+                                <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
+                                <small class="text-danger"><?= $errors['grade'] ?></small>
+                            </div>
+                            <div class="form-group mb-3 mt-3 d-inline-block">
+                                <button type="submit" name="create_btn" class="btn btn-success">Create student</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-
-</html>
+<?php include('layouts/assets/footer.php') ?>
