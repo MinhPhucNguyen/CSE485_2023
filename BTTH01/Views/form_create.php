@@ -1,6 +1,27 @@
 <?php
+if (isset($_POST['create_btn'])) {
+    if (!empty($_FILES['image_file'])) {
+        $file_name = $_FILES['image_file']["name"];
+        $file_tmp_name = $_FILES['image_file']["tmp_name"];
+        $allowed_ext = array("jpg", "png", "jpeg", "gif");
+        $splitFileName = explode('.', $file_name);
+        $image_ext = strtolower(end($splitFileName));
+
+
+
+        if (in_array($image_ext, $allowed_ext)) {
+            move_uploaded_file($file_tmp_name, "img/" . $file_name);
+        } else {
+            echo "looi";
+        }
+    }
+}
+?>
+<?php
 session_start(); //khởi tạo phiên 
 require_once('../Controllers/StudentDAO.php');
+
+
 $studentDAO = new StudentDAO();
 
 $student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '');
@@ -87,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a href="index.php" class="btn btn-danger float-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="form_create.php" method="POST">
+                        <form action="form_create.php" method="POST" enctype="multipart/form-data">
                             <div class="form-group mb-3">
                                 <label for="">ID</label>
                                 <input type="text" class="form-control" name="id" placeholder="Enter ID">
@@ -108,9 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
                                 <small class="text-danger"><?= $errors['grade'] ?></small>
                             </div>
+
                             <div class="form-group mb-3 mt-3 d-inline-block">
-                                <button type="submit" name="create_btn" class="btn btn-success">Create student</button>
+                                <button type="submit" name="create_btn" class="btn btn-success">Create
+                                    student</button>
                             </div>
+                            <input type="file" name="image_file"><br>
+
+
                         </form>
                     </div>
                 </div>
@@ -118,5 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
+<?php
+
+?>
 
 <?php include('layouts/assets/footer.php') ?>

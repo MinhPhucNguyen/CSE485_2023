@@ -1,6 +1,21 @@
 <?php
 require_once '../Models/Student.php';
 
+
+if (isset($_POST['submit'])) {
+    if (!empty($_FILES['image_file'])) {
+        $file_name = $_POST['image_file']["name"];
+        $file_tmp_name = $_FILES['image_file']["tmp_name"];
+        $allowed_ext = array("jpg", "png", "jpeg", "gif");
+        $splitFileName = explode('.', $file_name);
+        $image_ext = strtolower(end($splitFileName));
+
+        if (in_array($image_ext, $allowed_ext)) {
+            move_uploaded_file($file_tmp_name, "Views/" . $file_name);
+        }
+    }
+}
+
 class StudentDAO
 {
     private $studentsList = array();
@@ -18,6 +33,8 @@ class StudentDAO
         }
         return false;
     }
+
+
 
     public function create(Student $student)
     {

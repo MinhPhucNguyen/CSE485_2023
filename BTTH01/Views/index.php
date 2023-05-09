@@ -27,9 +27,9 @@ if (isset($_POST['delete_btn'])) {
                 <?php
                 if (isset($_SESSION['success'])) {
                 ?>
-                <div class="alert alert-success">
-                    <?= $_SESSION['success'] ?>
-                </div>
+                    <div class="alert alert-success">
+                        <?= $_SESSION['success'] ?>
+                    </div>
                 <?php
                     unset($_SESSION['success']);
                 }
@@ -43,46 +43,44 @@ if (isset($_POST['delete_btn'])) {
                         <?php
                         if (filesize('../students.csv') == 18) {
                         ?>
-                        <div class="text-center">
-                            <h4 class="text-warning">No Student Found</h4>
-                        </div>
+                            <div class="text-center">
+                                <h4 class="text-warning">No Student Found</h4>
+                            </div>
                         <?php
                         } else {
                         ?>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Grade</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Age</th>
+                                        <th>Grade</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
                                     $students = $studentDAO->getAll();
                                     foreach ($students as $student) :
                                     ?>
-                                <tr>
-                                    <td><?= $student->getId() ?></td>
-                                    <td><?= $student->getName() ?></td>
-                                    <td><?= $student->getAge() ?></td>
-                                    <td><?= $student->getGrade() ?></td>
-                                    <td>
-                                        <a href="form_edit.php?id=<?= $student->getId() ?>"
-                                            class="btn btn-primary">Edit</a>
-                                        <form action="index.php" class="d-inline-block" method="POST">
-                                            <button type="submit" value="<?= $student->getId() ?>" name="delete_btn"
-                                                class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
+                                        <tr>
+                                            <td><?= $student->getId() ?></td>
+                                            <td><?= $student->getName() ?></td>
+                                            <td><?= $student->getAge() ?></td>
+                                            <td><?= $student->getGrade() ?></td>
+                                            <td>
+                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">Edit</a>
+                                                <form action="index.php" class="d-inline-block" method="POST">
+                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php
                                     endforeach;
                                     ?>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
                         <?php
                         }
                         ?>
