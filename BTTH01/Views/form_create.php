@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); //khởi tạo phiên 
 require_once('../Controllers/StudentDAO.php');
 $studentDAO = new StudentDAO();
 
@@ -34,8 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (implode($errors)) { //nối trong mảng thành các chuỗi duy nhất
         $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
-    }
-    else {
+    } else {
         $student = new Student();
         $student->setId($id);
         $student->setName($name);
