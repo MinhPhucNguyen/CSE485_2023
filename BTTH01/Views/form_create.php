@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $age = $_POST['age'];
     $grade = $_POST['grade'];
 
-    $validate_input['id']['filter']               = FILTER_VALIDATE_INT;
+    $validate_input['id']['filter']                = FILTER_VALIDATE_INT;
     $validate_input['name']['filter']              = FILTER_VALIDATE_REGEXP;
     $validate_input['name']['options']['regexp']   = '/^[A-z]{2,10}$/';
     $validate_input['age']['filter']               = FILTER_VALIDATE_INT;
