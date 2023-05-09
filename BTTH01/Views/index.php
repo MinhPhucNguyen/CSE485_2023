@@ -16,7 +16,6 @@ if (isset($_POST['delete_btn'])) {
         exit();
     }
 }
-
 ?>
 
 <?php include('layouts/assets/header.php') ?>
