@@ -46,7 +46,7 @@ if (isset($_POST['edit_btn'])) {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Edit student</h2>
-                        <a href="index.php" class="btn btn-danger float-right">Back</a>
+                        <a href="index.php" class="btn btn-danger float-right"><i class="fa-solid fa-arrow-left"></i> Back</a>
                     </div>
                     <div class="card-body">
                         <?php

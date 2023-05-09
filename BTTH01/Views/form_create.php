@@ -34,8 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (implode($errors)) { //nối trong mảng thành các chuỗi duy nhất
         $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
-    }
-    else {
+    } else {
         $student = new Student();
         $student->setId($id);
         $student->setName($name);
@@ -71,7 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php
                 if (isset($_SESSION['error'])) {
                 ?>
-                    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Hey!</strong> <?= $_POST = '' ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php
                     unset($_SESSION['error']);
                 }
@@ -85,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Create new student</h2>
-                        <a href="index.php" class="btn btn-danger float-right">Back</a>
+                        <a href="index.php" class="btn btn-danger float-right"><i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> Back</a>
                     </div>
                     <div class="card-body">
                         <form action="form_create.php" method="POST">

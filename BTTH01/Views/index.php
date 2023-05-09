@@ -37,7 +37,7 @@ if (isset($_POST['delete_btn'])) {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Student Management</h2>
-                        <a href="form_create.php" class="btn btn-success float-right">Create New Student</a>
+                        <a href="form_create.php" class="btn btn-success float-right"><i class="fa-solid fa-plus" style="font-size: 14px;"></i> Create new Student </a>
                     </div>
                     <div class="card-body">
                         <?php
@@ -70,9 +70,10 @@ if (isset($_POST['delete_btn'])) {
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
                                             <td>
-                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">Edit</a>
+                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">
+                                                    <i class="fa-solid fa-pen-to-square" style="font-size: 14px;"></i> Edit</a>
                                                 <form action="index.php" class="d-inline-block" method="POST">
-                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger">Delete</button>
+                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger"><i class="fa-solid fa-trash-can" style="font-size: 14px;"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
