@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $validate_input['id']['filter']                = FILTER_VALIDATE_INT;
     $validate_input['name']['filter']              = FILTER_VALIDATE_REGEXP;
-    $validate_input['name']['options']['regexp']   = '/^[A-z]{2,10}$/';
+    $validate_input['name']['options']['regexp']   = '/^[A-Za-z\s]+$/';
     $validate_input['age']['filter']               = FILTER_VALIDATE_INT;
     $validate_input['age']['options']['min_range'] = 1;
     $validate_input['age']['options']['max_range'] = 50;
@@ -90,13 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php
                 if (isset($_SESSION['error'])) {
                 ?>
-                    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['error'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php
                     unset($_SESSION['error']);
                 }
                 if (isset($_SESSION['checkID'])) {
                 ?>
-                    <div class="alert alert-danger"><?= $_SESSION['checkID'] ?></div>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['checkID'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php
                     unset($_SESSION['checkID']);
                 }
@@ -104,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Create new student</h2>
-                        <a href="index.php" class="btn btn-danger float-right">Back</a>
+                        <a href="index.php" class="btn btn-danger float-end"><i class="fa-solid fa-arrow-left" style="font-size: 14px;"></i> Back</a>
                     </div>
                     <div class="card-body">
                         <form action="form_create.php" method="POST" enctype="multipart/form-data">

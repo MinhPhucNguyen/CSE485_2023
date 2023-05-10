@@ -27,8 +27,9 @@ if (isset($_POST['delete_btn'])) {
                 <?php
                 if (isset($_SESSION['success'])) {
                 ?>
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <?= $_SESSION['success'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php
                     unset($_SESSION['success']);
@@ -37,7 +38,7 @@ if (isset($_POST['delete_btn'])) {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Student Management</h2>
-                        <a href="form_create.php" class="btn btn-success float-right">Create New Student</a>
+                        <a href="form_create.php" class="btn btn-success float-end"><i class="fa-solid fa-plus" style="font-size: 14px;"></i> Create New Student </a>
                     </div>
                     <div class="card-body">
                         <?php
@@ -72,11 +73,13 @@ if (isset($_POST['delete_btn'])) {
                                             <td><?= $student->getName() ?></td>
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
-                                            <td><img src="img/<?= $student->getImg() ?>" alt="Image" height= '100px' width=""></td>
+                                            <td><img src="img/<?= $student->getImg() ?>" alt="Image" height= '60px' width="60px"></td>
                                             <td>
-                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">Edit</a>
+                                                <a href="" class="btn btn-primary text-white">View</a>
+                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-warning">
+                                                    <i class="fa-solid fa-pen-to-square" style="font-size: 14px;"></i> Edit</a>
                                                 <form action="index.php" class="d-inline-block" method="POST">
-                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger">Delete</button>
+                                                    <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger"><i class="fa-solid fa-trash-can" style="font-size: 14px;"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
