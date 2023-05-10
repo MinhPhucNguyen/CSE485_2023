@@ -1,4 +1,7 @@
 <?php
+
+?>
+<?php
 if (isset($_POST['create_btn'])) {
     if (!empty($_FILES['image_file'])) {
         $file_name = $_FILES['image_file']["name"];
@@ -7,18 +10,32 @@ if (isset($_POST['create_btn'])) {
         $splitFileName = explode('.', $file_name);
         $image_ext = strtolower(end($splitFileName));
 
-
-
         if (in_array($image_ext, $allowed_ext)) {
             move_uploaded_file($file_tmp_name, "img/" . $file_name);
+            $target_id = 233;
+            $file = fopen('../students.csv', 'r');
+            $temp_file = tmpfile();
+
+            while ($row = fgetcsv($file)) {
+
+                if ($row[0] == $target_id) {
+
+                    $row[4] = $filename;
+                }
+
+
+                fputcsv($temp_file, $row);
+            }
+
+
+            fclose($file);
+            fclose($temp_file);
         } else {
             echo "looi";
         }
     }
 }
-?>
-<?php
-session_start(); //khởi tạo phiên 
+session_start();
 require_once('../Controllers/StudentDAO.php');
 
 
@@ -32,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $age = $_POST['age'];
     $grade = $_POST['grade'];
 
+
     $validate_input['id']['filter']                = FILTER_VALIDATE_INT;
     $validate_input['name']['filter']              = FILTER_VALIDATE_REGEXP;
     $validate_input['name']['options']['regexp']   = '/^[A-z]{2,10}$/';
@@ -43,10 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $validate_input['grade']['options']['max_range'] = 50;
 
     $student = filter_input_array(INPUT_POST, $validate_input);
-
-    // echo '<pre>';
-    // var_dump(filter_input_array(INPUT_POST, $validate_inputs));
-    // echo '</pre>';
 
     $errors['id'] = empty(trim($id)) ? '*ID is required' : ($student['id'] ? '' : '*ID must be a number');
     $errors['name'] =  empty(trim($name)) ? '*Name is required' : ($student['name'] ? '' : '*Name is invalid');
@@ -129,12 +143,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
                                 <small class="text-danger"><?= $errors['grade'] ?></small>
                             </div>
+                            <input type="file" name="image_file"><br>
 
                             <div class="form-group mb-3 mt-3 d-inline-block">
                                 <button type="submit" name="create_btn" class="btn btn-success">Create
                                     student</button>
                             </div>
-                            <input type="file" name="image_file"><br>
+
 
 
                         </form>

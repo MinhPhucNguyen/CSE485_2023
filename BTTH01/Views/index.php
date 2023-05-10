@@ -52,11 +52,14 @@ if (isset($_POST['delete_btn'])) {
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Age</th>
                                         <th>Grade</th>
+                                        <th>Img</th>
                                         <th>Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,6 +72,7 @@ if (isset($_POST['delete_btn'])) {
                                             <td><?= $student->getName() ?></td>
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
+                                            <td><?= $student->getImg() ?></td>
                                             <td>
                                                 <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">Edit</a>
                                                 <form action="index.php" class="d-inline-block" method="POST">

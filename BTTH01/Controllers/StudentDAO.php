@@ -2,19 +2,7 @@
 require_once '../Models/Student.php';
 
 
-if (isset($_POST['submit'])) {
-    if (!empty($_FILES['image_file'])) {
-        $file_name = $_POST['image_file']["name"];
-        $file_tmp_name = $_FILES['image_file']["tmp_name"];
-        $allowed_ext = array("jpg", "png", "jpeg", "gif");
-        $splitFileName = explode('.', $file_name);
-        $image_ext = strtolower(end($splitFileName));
 
-        if (in_array($image_ext, $allowed_ext)) {
-            move_uploaded_file($file_tmp_name, "Views/" . $file_name);
-        }
-    }
-}
 
 class StudentDAO
 {
@@ -46,7 +34,7 @@ class StudentDAO
         if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'a');
             if ($file !== false) {
-                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade(), $student->getImg());
                 fputcsv($file, $array);
                 fclose($file);
                 return true;
