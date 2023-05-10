@@ -12,7 +12,6 @@ if (isset($_POST['create_btn'])) {
 
         if (in_array($image_ext, $allowed_ext)) {
             move_uploaded_file($file_tmp_name, "img/" . $file_name);
-            
         } else {
             echo "fai";
         }
@@ -24,8 +23,8 @@ require_once('../Controllers/StudentDAO.php');
 
 $studentDAO = new StudentDAO();
 
-$student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '','image_file' => '');
-$errors  = array('id' => '', 'name' => '', 'age' => '', 'grade' => '','image_file' => '');
+$student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '', 'image_file' => '');
+$errors  = array('id' => '', 'name' => '', 'age' => '', 'grade' => '', 'image_file' => '');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $name = $_POST['name'];
@@ -51,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors['age'] =  empty(trim($age)) ? '*Age is required' : ($student['age'] ? '' : '*Age is invalid');
     $errors['grade'] =  empty(trim($grade)) ? '*Grade is required' : ($student['grade'] ? '' : '*Grade is invalid');
 
-    if (implode($errors)) { 
+    if (implode($errors)) {
         $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
     } else {
         $student = new Student();
@@ -134,7 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
                                 <small class="text-danger"><?= $errors['grade'] ?></small>
                             </div>
-                            <input type="file" name="image_file"><br>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Image</label>
+                                <input class="form-control" type="file" name="image_file" id="formFile">
+                            </div>
 
                             <div class="form-group mb-3 mt-3 d-inline-block">
                                 <button type="submit" name="create_btn" class="btn btn-success">Create
