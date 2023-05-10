@@ -17,6 +17,7 @@ if (isset($_POST['delete_btn'])) {
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 // if(isset($_POST['search'])){
 //     $idStudent = $_POST['search'];
 //     $search = $studentDAO->search($idStudent);
@@ -81,6 +82,12 @@ if (isset($_POST['delete_btn'])) {
 
 <?php include('layouts/assets/header.php') ?>
 
+=======
+?>
+
+<?php include('layouts/assets/header.php') ?>
+
+>>>>>>> 71c3981be0b51ba0597c09f5802d014e787e38fb
 <div class="main">
     <div class="container-fluid">
         <div class="row mt-4">
@@ -111,6 +118,9 @@ if (isset($_POST['delete_btn'])) {
                         <?php
                         } else {
                         ?>
+<<<<<<< HEAD
+>>>>>>> 71c3981be0b51ba0597c09f5802d014e787e38fb
+=======
 >>>>>>> 71c3981be0b51ba0597c09f5802d014e787e38fb
                             <table class="table table-bordered table-striped">
                                 <thead>
