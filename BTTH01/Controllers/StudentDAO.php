@@ -1,6 +1,9 @@
 <?php
 require_once '../Models/Student.php';
 
+
+
+
 class StudentDAO
 {
     private $studentsList = array();
@@ -19,6 +22,8 @@ class StudentDAO
         return false;
     }
 
+
+
     public function create(Student $student)
     {
         if ($this->checkID($student->getId())) {
@@ -29,7 +34,7 @@ class StudentDAO
         if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'a');
             if ($file !== false) {
-                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade());
+                $array = array($student->getId(), $student->getName(), $student->getAge(), $student->getGrade(), $student->getImg());
                 fputcsv($file, $array);
                 fclose($file);
                 return true;
@@ -132,13 +137,14 @@ class StudentDAO
         if (file_exists($this->filename)) {
             $file = fopen($this->filename, 'r');
             if ($file) {
-                fgetcsv($file); //bỏ qua hàng tiêu đề
+                fgetcsv($file); 
                 while (($row = fgetcsv($file)) !== false) {
                     $student = new Student();
                     $student->setId($row[0]);
                     $student->setName($row[1]);
                     $student->setAge($row[2]);
                     $student->setGrade($row[3]);
+                    $student->setImg($row[4]);
                     $this->studentsList[] = $student;
                 }
             } else {
