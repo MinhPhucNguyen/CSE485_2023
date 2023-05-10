@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors['age'] =  empty(trim($age)) ? '*Age is required' : ($student['age'] ? '' : '*Age is invalid');
     $errors['grade'] =  empty(trim($grade)) ? '*Grade is required' : ($student['grade'] ? '' : '*Grade is invalid');
 
-    if (implode($errors)) { //nối trong mảng thành các chuỗi duy nhất
+    if (implode($errors)) { //nối chuối lỗi trong mảng thành các chuỗi duy nhất
         $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
     } else {
         $student = new Student();
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_SESSION['error'])) {
                 ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Hey!</strong> <?= $_SESSION['error'] ?>
+                        <?= $_SESSION['error'] ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php
@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
                 if (isset($_SESSION['checkID'])) {
                 ?>
-                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Hey!</strong> <?= $_SESSION['checkID'] ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['checkID'] ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php

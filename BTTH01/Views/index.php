@@ -27,8 +27,8 @@ if (isset($_POST['delete_btn'])) {
                 <?php
                 if (isset($_SESSION['success'])) {
                 ?>
-                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Hey!</strong> <?= $_SESSION['success'] ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['success'] ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php
@@ -71,7 +71,8 @@ if (isset($_POST['delete_btn'])) {
                                             <td><?= $student->getAge() ?></td>
                                             <td><?= $student->getGrade() ?></td>
                                             <td>
-                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-primary">
+                                                <a href="" class="btn btn-primary text-white">View</a>
+                                                <a href="form_edit.php?id=<?= $student->getId() ?>" class="btn btn-warning">
                                                     <i class="fa-solid fa-pen-to-square" style="font-size: 14px;"></i> Edit</a>
                                                 <form action="index.php" class="d-inline-block" method="POST">
                                                     <button type="submit" value="<?= $student->getId() ?>" name="delete_btn" class="btn btn-danger"><i class="fa-solid fa-trash-can" style="font-size: 14px;"></i> Delete</button>
