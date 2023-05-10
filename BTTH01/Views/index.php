@@ -27,8 +27,9 @@ if (isset($_POST['delete_btn'])) {
                 <?php
                 if (isset($_SESSION['success'])) {
                 ?>
-                    <div class="alert alert-success">
-                        <?= $_SESSION['success'] ?>
+                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Hey!</strong> <?= $_SESSION['success'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php
                     unset($_SESSION['success']);
@@ -37,7 +38,7 @@ if (isset($_POST['delete_btn'])) {
                 <div class="card">
                     <div class="card-header">
                         <h2 class="d-inline-block">Student Management</h2>
-                        <a href="form_create.php" class="btn btn-success float-right"><i class="fa-solid fa-plus" style="font-size: 14px;"></i> Create new Student </a>
+                        <a href="form_create.php" class="btn btn-success float-end"><i class="fa-solid fa-plus" style="font-size: 14px;"></i> Create New Student </a>
                     </div>
                     <div class="card-body">
                         <?php
