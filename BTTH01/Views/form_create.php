@@ -1,15 +1,38 @@
 <?php
+
+?>
+<?php
+if (isset($_POST['create_btn'])) {
+    if (!empty($_FILES['image_file'])) {
+        $file_name = $_FILES['image_file']["name"];
+        $file_tmp_name = $_FILES['image_file']["tmp_name"];
+        $allowed_ext = array("jpg", "png", "jpeg", "gif");
+        $splitFileName = explode('.', $file_name);
+        $image_ext = strtolower(end($splitFileName));
+
+        if (in_array($image_ext, $allowed_ext)) {
+            move_uploaded_file($file_tmp_name, "img/" . $file_name);
+            
+        } else {
+            echo "fai";
+        }
+    }
+}
 session_start();
 require_once('../Controllers/StudentDAO.php');
+
+
 $studentDAO = new StudentDAO();
 
-$student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '');
-$errors  = array('id' => '', 'name' => '', 'age' => '', 'grade' => '');
+$student = array('id' => '', 'name' => '', 'age' => '', 'grade' => '','image_file' => '');
+$errors  = array('id' => '', 'name' => '', 'age' => '', 'grade' => '','image_file' => '');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $age = $_POST['age'];
     $grade = $_POST['grade'];
+    $img = $_FILES['image_file']['name'];
+
 
     $validate_input['id']['filter']                = FILTER_VALIDATE_INT;
     $validate_input['name']['filter']              = FILTER_VALIDATE_REGEXP;
@@ -23,24 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $student = filter_input_array(INPUT_POST, $validate_input);
 
-    // echo '<pre>';
-    // var_dump(filter_input_array(INPUT_POST, $validate_inputs));
-    // echo '</pre>';
-
     $errors['id'] = empty(trim($id)) ? '*ID is required' : ($student['id'] ? '' : '*ID must be a number');
     $errors['name'] =  empty(trim($name)) ? '*Name is required' : ($student['name'] ? '' : '*Name is invalid');
     $errors['age'] =  empty(trim($age)) ? '*Age is required' : ($student['age'] ? '' : '*Age is invalid');
     $errors['grade'] =  empty(trim($grade)) ? '*Grade is required' : ($student['grade'] ? '' : '*Grade is invalid');
 
-    if (implode($errors)) { //nối trong mảng thành các chuỗi duy nhất
+    if (implode($errors)) { 
         $_SESSION['error'] = 'The information you entered is invalid. Please check and enter again.';
-    }
-    else {
+    } else {
         $student = new Student();
         $student->setId($id);
         $student->setName($name);
         $student->setAge($age);
         $student->setGrade($grade);
+        $student->setImg($img);
 
         $result = $studentDAO->create($student);
         if ($result) {
@@ -88,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a href="index.php" class="btn btn-danger float-right">Back</a>
                     </div>
                     <div class="card-body">
-                        <form action="form_create.php" method="POST">
+                        <form action="form_create.php" method="POST" enctype="multipart/form-data">
                             <div class="form-group mb-3">
                                 <label for="">ID</label>
                                 <input type="text" class="form-control" name="id" placeholder="Enter ID">
@@ -109,8 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="text" class="form-control" name="grade" placeholder="Enter Grade">
                                 <small class="text-danger"><?= $errors['grade'] ?></small>
                             </div>
+                            <input type="file" name="image_file"><br>
+
                             <div class="form-group mb-3 mt-3 d-inline-block">
-                                <button type="submit" name="create_btn" class="btn btn-success">Create student</button>
+                                <button type="submit" name="create_btn" class="btn btn-success">Create
+                                    student</button>
                             </div>
                         </form>
                     </div>
@@ -119,5 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
+<?php
+
+?>
 
 <?php include('layouts/assets/footer.php') ?>

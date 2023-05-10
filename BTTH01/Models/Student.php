@@ -5,6 +5,7 @@ class Student
     private $name;
     private $age;
     private $grade;
+    private $img;
     public function getId()
     {
         return $this->id;
@@ -41,5 +42,13 @@ class Student
     public function setGrade($grade)
     {
         $this->grade = $grade;
+    }
+    public function getImg()
+    {
+        return $this->img;
+    }
+    public function setImg($img)
+    {
+        $this->img = $img;
     }
 }
