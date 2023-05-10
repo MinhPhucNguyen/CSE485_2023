@@ -58,7 +58,7 @@ if (isset($_POST['delete_btn'])) {
                                         <th>Name</th>
                                         <th>Age</th>
                                         <th>Grade</th>
-                                        <th>Img</th>
+                                        <th>Image</th>
                                         <th>Action</th>
 
                                     </tr>
