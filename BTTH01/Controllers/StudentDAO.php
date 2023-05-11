@@ -15,8 +15,8 @@ class StudentDAO
             $file = fopen($this->filename, 'r');
             fgetcsv($file);
             while (($row = fgetcsv($file)) !== false) {
-                if(strpos($row[0],$searchTerm) !== false){
-                    echo "<p>" . $row[0] . " - " . $row[1] . "</p>";
+                if($row[0] == $searchTerm){
+                    return $row;
                 }
             }fclose($file);
     }
